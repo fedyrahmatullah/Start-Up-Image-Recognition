@@ -1,16 +1,14 @@
 class App extends React.Component {
-    
+    //reverensi video and canvas
     videoRef = React.createRef();
     canvasRef = React.createRef();
-  
-    
+  //Untuk mengatur letak video webcam, posisi ini agar video webcam ditengah, untuk resolusi laptop yang beda bisa disesuaikan
     styles = {
       position: 'fixed',
       top: 150,
       left: 150,
     };
-  
-  
+  //untuk mendeteksi video. jika video webcam tidak terdeteksi maka akan muncul tulisan "Couldn't start the webcam" on console log
     detectFromVideoFrame = (model, video) => {
       model.detect(video).then(predictions => {
         this.showDetections(predictions);
@@ -23,7 +21,7 @@ class App extends React.Component {
         console.error(error)
       });
     };
-  
+  // Untuk menampilkan hasil deteksi pada kotak hijau di video
     showDetections = predictions => {
       const ctx = this.canvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -36,7 +34,7 @@ class App extends React.Component {
         const y = prediction.bbox[1];
         const width = prediction.bbox[2];
         const height = prediction.bbox[3];
-        // Draw the bounding box.
+        // Draw the bounding box atau Gambar kotak pembatas. warna dan lebar frame bisa disesuaikan
         ctx.strokeStyle = "#2fff00";
         ctx.lineWidth = 1;
         ctx.strokeRect(x, y, width, height);
@@ -49,7 +47,7 @@ class App extends React.Component {
         // draw bottom left rectangle
         ctx.fillRect(x, y + height - textHeight, textWidth + 15, textHeight + 10);
   
-        // Draw the text last to ensure it's on top.
+        // Draw the text last to ensure it's on top atau text yang ada diatas kotak
         ctx.fillStyle = "#000000";
         ctx.fillText(prediction.class, x, y);
         ctx.fillText(prediction.score.toFixed(2), x, y + height - textHeight);
@@ -59,6 +57,11 @@ class App extends React.Component {
     componentDidMount() {
       if (navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia) {
         // define a Promise that'll be used to load the webcam and read its frames
+        // [define Promise] untuk me-load webcam dan membaca frames 
+        // Promise yang dimaksud yaitu programming pattern di js (java script) yang bakal return suatu value di masa yang akan datang, makanya pattern ini dipakai utk "deferred and asynchronous computations"
+        // artinya kita ga akan ngeblock tampilan web kita sampe model (detection videonya kita) ke-load
+        // Jadi di sini kita pakai Promise buat object detection nya ya
+        // di sini ada 2 promise yang kita pake yaitu webcamPromise (buat menggil webcam) dan loadModelPromise (buat manggil model dari coco-ssd yang dijelasin di file index.html)
         const webcamPromise = navigator.mediaDevices
           .getUserMedia({
             video: true,
