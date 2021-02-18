@@ -60,7 +60,7 @@ class App extends React.Component {
         // [define Promise] untuk me-load webcam dan membaca frames 
         // Promise yang dimaksud yaitu programming pattern di js (java script) yang bakal return suatu value di masa yang akan datang, makanya pattern ini dipakai utk "deferred and asynchronous computations"
         // artinya kita ga akan ngeblock tampilan web kita sampe model (detection videonya kita) ke-load
-        // Jadi di sini kita pakai Promise buat object detection nya ya
+        // Jadi di sini kita pakai Promise buat object detection nya
         // di sini ada 2 promise yang kita pake yaitu webcamPromise (buat menggil webcam) dan loadModelPromise (buat manggil model dari coco-ssd yang dijelasin di file index.html)
         const webcamPromise = navigator.mediaDevices
           .getUserMedia({
